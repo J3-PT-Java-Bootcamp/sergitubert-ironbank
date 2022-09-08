@@ -1,14 +1,11 @@
 # Sergi Tubert - Ironbank
+Ironbank is an open source Fintech alternative.
+
 ## Table of Contents
-1. [General Info](#general-info)
-2. [Technologies](#technologies)
-3. [Installation](#installation)
-4. [Documentation](#documentation)
+1. [Technologies](#technologies)
+2. [Installation](#installation)
+3. [Documentation](#documentation)
 
-## General Info
-***
-
-Ironbank is an open source Fintech alternative. 
 ## Technologies
 ***
 A list of technologies used within the project:
