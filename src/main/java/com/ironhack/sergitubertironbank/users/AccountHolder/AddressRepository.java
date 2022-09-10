@@ -1,7 +1,8 @@
-package com.ironhack.sergitubertironbank.users.repositories;
+package com.ironhack.sergitubertironbank.users.AccountHolder;
 
-import com.ironhack.sergitubertironbank.users.entities.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
 }

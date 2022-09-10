@@ -1,4 +1,4 @@
-package com.ironhack.sergitubertironbank.users.entities;
+package com.ironhack.sergitubertironbank.users.AccountHolder;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

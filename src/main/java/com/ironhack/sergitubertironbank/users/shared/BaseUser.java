@@ -1,4 +1,4 @@
-package com.ironhack.sergitubertironbank.users.entities;
+package com.ironhack.sergitubertironbank.users.shared;
 
 import javax.persistence.*;
 

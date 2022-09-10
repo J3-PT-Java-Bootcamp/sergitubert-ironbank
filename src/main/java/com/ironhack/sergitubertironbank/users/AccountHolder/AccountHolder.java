@@ -1,4 +1,6 @@
-package com.ironhack.sergitubertironbank.users.entities;
+package com.ironhack.sergitubertironbank.users.AccountHolder;
+
+import com.ironhack.sergitubertironbank.users.shared.BaseUser;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
