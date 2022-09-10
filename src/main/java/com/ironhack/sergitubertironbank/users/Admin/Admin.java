@@ -2,7 +2,8 @@ package com.ironhack.sergitubertironbank.users.Admin;
 
 import com.ironhack.sergitubertironbank.users.Admin.dto.CreateAdminDto;
 import com.ironhack.sergitubertironbank.users.shared.BaseUser;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 

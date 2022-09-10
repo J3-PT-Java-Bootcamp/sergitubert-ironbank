@@ -16,7 +16,10 @@ public abstract class BaseUser {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+
+    private String keycloakId;
 
     public BaseUser(String name) {
         this.name = name;
