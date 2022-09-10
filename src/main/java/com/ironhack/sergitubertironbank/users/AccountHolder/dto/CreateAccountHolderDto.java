@@ -22,4 +22,7 @@ public class CreateAccountHolderDto {
 
     @Email
     private String email;
+
+    @NotEmpty
+    private String password;
 }
