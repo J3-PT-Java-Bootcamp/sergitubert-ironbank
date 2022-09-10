@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SergitubertIronbankApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SergitubertIronbankApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SergitubertIronbankApplication.class, args);
+    }
 
 }
