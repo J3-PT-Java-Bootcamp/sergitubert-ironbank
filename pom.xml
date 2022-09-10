@@ -15,6 +15,7 @@
 	<description>sergitubert-ironbank</description>
 	<properties>
 		<java.version>17</java.version>
+		<keycloak.version>19.0.1</keycloak.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -57,6 +58,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-boot-starter</artifactId>
+			<version>${keycloak.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-admin-client</artifactId>
+			<version>${keycloak.version}</version>
 		</dependency>
 	</dependencies>
 
