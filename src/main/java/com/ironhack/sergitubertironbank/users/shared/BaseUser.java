@@ -1,8 +1,15 @@
 package com.ironhack.sergitubertironbank.users.shared;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class BaseUser {
     @Id
@@ -11,4 +18,7 @@ public abstract class BaseUser {
 
     private String name;
 
+    public BaseUser(String name) {
+        this.name = name;
+    }
 }
