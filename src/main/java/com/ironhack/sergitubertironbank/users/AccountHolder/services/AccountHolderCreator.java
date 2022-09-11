@@ -4,7 +4,9 @@ import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
 import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolderRepository;
 import com.ironhack.sergitubertironbank.users.AccountHolder.dto.CreateAccountHolderDto;
 import com.ironhack.sergitubertironbank.users.Admin.services.UserEmailAlreadyExists;
+import com.ironhack.sergitubertironbank.users.keycloak.CreateKeycloakUserDto;
 import com.ironhack.sergitubertironbank.users.keycloak.KeycloakAdminClientService;
+import com.ironhack.sergitubertironbank.users.keycloak.KeycloakGroups;
 import com.ironhack.sergitubertironbank.users.keycloak.KeycloakUserNotCreatedException;
 import com.ironhack.sergitubertironbank.users.shared.BaseUserRepository;
 import org.springframework.stereotype.Service;
@@ -23,8 +25,7 @@ public class AccountHolderCreator {
     }
 
     public AccountHolder execute(CreateAccountHolderDto dto) throws UserEmailAlreadyExists, KeycloakUserNotCreatedException {
-//         var keycloakId = this.keycloak.createKeycloakUser(new CreateKeycloakUserDto(dto.getPassword(), dto.getEmail(), KeycloakGroups.ACCOUNT_HOLDER));
-        String keycloakId = null;
+        var keycloakId = this.keycloak.createKeycloakUser(new CreateKeycloakUserDto(dto.getPassword(), dto.getEmail(), KeycloakGroups.ACCOUNT_HOLDER));
         var user = this.userRepository.findBaseUserByEmail(dto.getEmail());
         if (user.isPresent()) {
             throw new UserEmailAlreadyExists(dto.getEmail());
