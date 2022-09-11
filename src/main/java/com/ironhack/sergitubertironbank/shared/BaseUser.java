@@ -1,4 +1,4 @@
-package com.ironhack.sergitubertironbank.users.shared;
+package com.ironhack.sergitubertironbank.shared;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
