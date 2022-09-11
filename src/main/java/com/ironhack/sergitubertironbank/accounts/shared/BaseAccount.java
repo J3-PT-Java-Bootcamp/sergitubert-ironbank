@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @MappedSuperclass
 @AllArgsConstructor
-public class BaseAccount {
+public abstract class BaseAccount {
 
     protected static final Integer PENALTY_FEE = 40;
 
