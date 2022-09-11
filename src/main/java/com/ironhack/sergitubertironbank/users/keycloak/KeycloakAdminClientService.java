@@ -1,6 +1,6 @@
 package com.ironhack.sergitubertironbank.users.keycloak;
 
-import com.ironhack.sergitubertironbank.config.KeycloakProvider;
+import com.ironhack.sergitubertironbank.config.keycloak.KeycloakProvider;
 import lombok.extern.java.Log;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;

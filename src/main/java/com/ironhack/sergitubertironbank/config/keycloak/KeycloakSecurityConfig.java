@@ -1,4 +1,4 @@
-package com.ironhack.sergitubertironbank.config;
+package com.ironhack.sergitubertironbank.config.keycloak;
 
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;

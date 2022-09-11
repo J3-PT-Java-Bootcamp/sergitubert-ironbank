@@ -1,4 +1,4 @@
-package com.ironhack.sergitubertironbank.config;
+package com.ironhack.sergitubertironbank.config.keycloak;
 
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
