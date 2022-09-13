@@ -2,10 +2,13 @@ package com.ironhack.sergitubertironbank.accounts.controllers;
 
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.CreditAccount;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.dto.CreateCreditAccountDto;
+import com.ironhack.sergitubertironbank.accounts.CreditAccount.services.CreditAccountCreator;
+import com.ironhack.sergitubertironbank.accounts.CreditAccount.services.OwnerNotFoundException;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.CheckingAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.SavingsAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.StudentCheckingAccount;
 import com.ironhack.sergitubertironbank.shared.validators.IBAN.IBAN;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +18,16 @@ import javax.validation.Valid;
 @RequestMapping("/accounts")
 public class AccountsController {
 
-    @PostMapping()
-    public ResponseEntity<CreditAccount> createCreditAccount(@RequestBody @Valid CreateCreditAccountDto dto) {
+    private final CreditAccountCreator creditAccountCreator;
 
-        return null;
+    public AccountsController(CreditAccountCreator creditAccountCreator) {
+        this.creditAccountCreator = creditAccountCreator;
+    }
+
+    @PostMapping()
+    public ResponseEntity<CreditAccount> createCreditAccount(@RequestBody @Valid CreateCreditAccountDto dto) throws OwnerNotFoundException {
+        var creditAccount = this.creditAccountCreator.execute(dto);
+        return new ResponseEntity<>(creditAccount, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{iban}/balance")

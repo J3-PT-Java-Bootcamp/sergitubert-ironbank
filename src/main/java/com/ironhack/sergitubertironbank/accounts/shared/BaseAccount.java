@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @MappedSuperclass
-@AllArgsConstructor
 public abstract class BaseAccount {
 
     protected static final Integer PENALTY_FEE = 40;
@@ -40,4 +39,10 @@ public abstract class BaseAccount {
 
     @CreatedDate
     private LocalDate createdAt;
+
+    public BaseAccount(String iban, Money balance, Owner primaryOwner) {
+        this.iban = iban;
+        this.balance = balance;
+        this.primaryOwner = primaryOwner;
+    }
 }
