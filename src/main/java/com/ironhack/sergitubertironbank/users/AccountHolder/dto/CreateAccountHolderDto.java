@@ -5,25 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @AllArgsConstructor
 public class CreateAccountHolderDto {
-    @NotEmpty
+    @NotBlank
     private String name;
 
     @NotNull
     @JsonFormat(pattern = "yyyy/MM/dd")
     private LocalDate dateOfBirth;
 
+    @NotBlank
     @Email
     private String email;
 
-    @NotEmpty
+    @NotBlank
+    @Size(min = 6)
     private String password;
 }
