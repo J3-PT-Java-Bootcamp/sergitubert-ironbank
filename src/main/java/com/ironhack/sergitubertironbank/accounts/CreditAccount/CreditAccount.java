@@ -39,37 +39,8 @@ public class CreditAccount extends BaseAccount {
 
     private CreditAccount(String iban, Money balance, Owner primaryOwner, Money creditLimit, BigDecimal interestRate) {
         super(iban, balance, primaryOwner);
-    }
-    private CreditAccount(String iban, Money balance, Owner primaryOwner, BigDecimal interestRate) {
-        super(iban, balance, primaryOwner);
         this.interestRate = interestRate;
-        this.creditLimit = CreditAccount.DEFAULT_CREDIT_LIMIT;
-    }
-    private CreditAccount(String iban, Money balance, Owner primaryOwner, Money creditLimit) {
-        super(iban, balance, primaryOwner);
         this.creditLimit = creditLimit;
-        this.interestRate = CreditAccount.DEFAULT_INTEREST_RATE;
-    }
-
-    private CreditAccount(String iban, Money balance, Owner primaryOwner) {
-        super(iban, balance, primaryOwner);
-        this.creditLimit = CreditAccount.DEFAULT_CREDIT_LIMIT;
-        this.interestRate = CreditAccount.DEFAULT_INTEREST_RATE;
-    }
-
-    public static CreditAccount create(Money balance, Owner primaryOwner) {
-        Iban iban = Iban.random(CountryCode.US);
-        return new CreditAccount(iban.toString(), balance, primaryOwner);
-    }
-
-    public static CreditAccount create(Money balance, Owner primaryOwner, Money creditLimit) {
-        Iban iban = Iban.random(CountryCode.US);
-        return new CreditAccount(iban.toString(), balance, primaryOwner, creditLimit);
-    }
-
-    public static CreditAccount create(Money balance, Owner primaryOwner, BigDecimal interestRate) {
-        Iban iban = Iban.random(CountryCode.US);
-        return new CreditAccount(iban.toString(), balance, primaryOwner, interestRate);
     }
 
     public static CreditAccount create(Money balance, Owner primaryOwner, Money creditLimit, BigDecimal interestRate) {
@@ -78,19 +49,10 @@ public class CreditAccount extends BaseAccount {
     }
 
     public static CreditAccount fromDto(CreateCreditAccountDto dto, Owner primaryOwner) {
-        // TODO refactor with ternary?
         var balance = new Money(dto.getBalance());
-        if (dto.getInterestRate() != null && dto.getCreditLimit() != null) {
-            return CreditAccount.create(balance, primaryOwner, new Money(dto.getCreditLimit()), dto.getInterestRate());
-        }
-        if (dto.getInterestRate() == null && dto.getCreditLimit() != null) {
-            return CreditAccount.create(balance, primaryOwner, new Money(dto.getCreditLimit()));
-        }
-
-        if (dto.getInterestRate() != null && dto.getCreditLimit() == null) {
-            return CreditAccount.create(balance, primaryOwner, dto.getInterestRate());
-        }
-        return CreditAccount.create(balance, primaryOwner);
+        var creditLimit = dto.getCreditLimit() != null ? new Money(dto.getCreditLimit()) : CreditAccount.DEFAULT_CREDIT_LIMIT;
+        var interestRate = dto.getInterestRate() != null ? dto.getInterestRate() : CreditAccount.DEFAULT_INTEREST_RATE;
+        return CreditAccount.create(balance, primaryOwner, creditLimit, interestRate);
     }
 
 }
