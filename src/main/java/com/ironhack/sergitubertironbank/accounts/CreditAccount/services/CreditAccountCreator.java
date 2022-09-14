@@ -4,7 +4,9 @@ import com.ironhack.sergitubertironbank.accounts.CreditAccount.CreditAccount;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.CreditAccountRepository;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.dto.CreateCreditAccountDto;
 import com.ironhack.sergitubertironbank.accounts.shared.OwnerRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public final class CreditAccountCreator {
     private final CreditAccountRepository repository;
     private final OwnerRepository ownerRepository;
