@@ -3,21 +3,22 @@ package com.ironhack.sergitubertironbank.accounts.CreditAccount.services;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.CreditAccount;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.CreditAccountRepository;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.dto.CreateCreditAccountDto;
-import com.ironhack.sergitubertironbank.accounts.shared.OwnerRepository;
+import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolderRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public final class CreditAccountCreator {
     private final CreditAccountRepository repository;
-    private final OwnerRepository ownerRepository;
+    private final AccountHolderRepository accountHolderRepository;
 
-    public CreditAccountCreator(CreditAccountRepository repository, OwnerRepository ownerRepository) {
+    public CreditAccountCreator(CreditAccountRepository repository, AccountHolderRepository ownerRepository) {
         this.repository = repository;
-        this.ownerRepository = ownerRepository;
+        this.accountHolderRepository = ownerRepository;
     }
 
     public CreditAccount execute(CreateCreditAccountDto dto) throws OwnerNotFoundException {
-        var user = this.ownerRepository.findById(dto.getOwnerId()).orElseThrow(() -> new OwnerNotFoundException(dto.getOwnerId()));
+        var user = this.accountHolderRepository.findById(dto.getOwnerId()).orElseThrow(() -> new OwnerNotFoundException(dto.getOwnerId()));
+        System.out.println(user);
         var account = CreditAccount.fromDto(dto, user);
         this.repository.save(account);
         return account;

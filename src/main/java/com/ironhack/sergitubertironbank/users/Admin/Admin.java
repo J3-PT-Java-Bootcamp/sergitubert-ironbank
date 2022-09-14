@@ -1,7 +1,7 @@
 package com.ironhack.sergitubertironbank.users.Admin;
 
-import com.ironhack.sergitubertironbank.users.Admin.dto.CreateAdminDto;
 import com.ironhack.sergitubertironbank.shared.BaseUser;
+import com.ironhack.sergitubertironbank.users.Admin.dto.CreateAdminDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

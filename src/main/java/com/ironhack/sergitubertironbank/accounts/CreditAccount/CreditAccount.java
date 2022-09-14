@@ -3,14 +3,12 @@ package com.ironhack.sergitubertironbank.accounts.CreditAccount;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.dto.CreateCreditAccountDto;
 import com.ironhack.sergitubertironbank.accounts.shared.BaseAccount;
 import com.ironhack.sergitubertironbank.accounts.shared.Money;
-import com.ironhack.sergitubertironbank.accounts.shared.Owner;
-import lombok.AllArgsConstructor;
+import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
-import org.iban4j.IbanUtil;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -37,18 +35,18 @@ public class CreditAccount extends BaseAccount {
 
     private BigDecimal interestRate;
 
-    private CreditAccount(String iban, Money balance, Owner primaryOwner, Money creditLimit, BigDecimal interestRate) {
+    private CreditAccount(String iban, Money balance, AccountHolder primaryOwner, Money creditLimit, BigDecimal interestRate) {
         super(iban, balance, primaryOwner);
         this.interestRate = interestRate;
         this.creditLimit = creditLimit;
     }
 
-    public static CreditAccount create(Money balance, Owner primaryOwner, Money creditLimit, BigDecimal interestRate) {
-        Iban iban = Iban.random(CountryCode.US);
+    public static CreditAccount create(Money balance, AccountHolder primaryOwner, Money creditLimit, BigDecimal interestRate) {
+        Iban iban = Iban.random(CountryCode.ES);
         return new CreditAccount(iban.toString(), balance, primaryOwner, creditLimit, interestRate);
     }
 
-    public static CreditAccount fromDto(CreateCreditAccountDto dto, Owner primaryOwner) {
+    public static CreditAccount fromDto(CreateCreditAccountDto dto, AccountHolder primaryOwner) {
         var balance = new Money(dto.getBalance());
         var creditLimit = dto.getCreditLimit() != null ? new Money(dto.getCreditLimit()) : CreditAccount.DEFAULT_CREDIT_LIMIT;
         var interestRate = dto.getInterestRate() != null ? dto.getInterestRate() : CreditAccount.DEFAULT_INTEREST_RATE;

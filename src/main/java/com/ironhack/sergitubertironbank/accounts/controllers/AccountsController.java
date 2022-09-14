@@ -7,7 +7,10 @@ import com.ironhack.sergitubertironbank.accounts.CreditAccount.services.OwnerNot
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.CheckingAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.SavingsAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.StudentCheckingAccount;
-import com.ironhack.sergitubertironbank.shared.validators.IBAN.IBAN;
+import com.ironhack.sergitubertironbank.accounts.shared.AccountNotFoundException;
+import com.ironhack.sergitubertironbank.accounts.shared.BalanceModifier;
+import com.ironhack.sergitubertironbank.accounts.shared.BaseAccount;
+import com.ironhack.sergitubertironbank.accounts.shared.ModifyBalanceDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,38 +22,41 @@ import javax.validation.Valid;
 public class AccountsController {
 
     private final CreditAccountCreator creditAccountCreator;
+    private final BalanceModifier balanceModifier;
 
-    public AccountsController(CreditAccountCreator creditAccountCreator) {
+    public AccountsController(CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier) {
         this.creditAccountCreator = creditAccountCreator;
+        this.balanceModifier = balanceModifier;
     }
 
-    @PostMapping()
+    @PostMapping("/credit")
     public ResponseEntity<CreditAccount> createCreditAccount(@RequestBody @Valid CreateCreditAccountDto dto) throws OwnerNotFoundException {
         var creditAccount = this.creditAccountCreator.execute(dto);
         return new ResponseEntity<>(creditAccount, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{iban}/balance")
-    public void modifyBalance(@PathVariable String iban) {
-
+    public ResponseEntity<BaseAccount> modifyBalance(@PathVariable String iban, @RequestBody @Valid ModifyBalanceDto dto) throws AccountNotFoundException {
+        var account = this.balanceModifier.execute(iban, dto);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @GetMapping("/savings/{iban}")
-    public ResponseEntity<SavingsAccount> getSavingAccount(@PathVariable @IBAN String iban) {
+    public ResponseEntity<SavingsAccount> getSavingAccount(@PathVariable String iban) {
         return null;
     }
 
-    @GetMapping("/checking-account/{iban}")
+    @GetMapping("/checking/{iban}")
     public ResponseEntity<CheckingAccount> getCheckingAccount(@PathVariable String iban) {
         return null;
     }
 
-    @GetMapping("/credit-account/{iban}")
+    @GetMapping("/credit/{iban}")
     public ResponseEntity<CreditAccount> getCreditAccount(@PathVariable String iban) {
         return null;
     }
 
-    @GetMapping("/student-checking-account/{iban}")
+    @GetMapping("/student-checking/{iban}")
     public ResponseEntity<StudentCheckingAccount> getStudentCheckingAccount(@PathVariable String iban) {
         return null;
     }

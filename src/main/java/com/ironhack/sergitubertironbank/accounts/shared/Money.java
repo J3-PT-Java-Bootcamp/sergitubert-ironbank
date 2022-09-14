@@ -1,7 +1,7 @@
 package com.ironhack.sergitubertironbank.accounts.shared;
 
-import java.math.RoundingMode;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Currency;
 
 public class Money {
@@ -16,6 +16,10 @@ public class Money {
      * Class constructor specifying amount, currency, and rounding
      **/
 
+    public Money() {
+        this.currency = USD;
+    }
+
     public Money(BigDecimal amount, Currency currency, RoundingMode rounding) {
         this.currency = currency;
         setAmount(amount.setScale(currency.getDefaultFractionDigits(), rounding));
@@ -24,7 +28,7 @@ public class Money {
     /**
      * Class constructor specifying amount, and currency. Uses default RoundingMode HALF_EVEN.
      **/
-    public Money(BigDecimal amount, Currency currency) {
+    public Money(BigDecimal amount, Currency currency, Currency currency1) {
         this(amount, currency, DEFAULT_ROUNDING);
     }
 

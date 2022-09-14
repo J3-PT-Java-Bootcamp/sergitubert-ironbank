@@ -13,7 +13,7 @@ import javax.persistence.Entity;
 @Setter
 @NoArgsConstructor
 
-public class SavingsAccount extends BaseDebitAccount{
+public class SavingsAccount extends BaseDebitAccount {
 
     protected static final Double DEFAULT_INTEREST_RATE = 0.0025;
     protected static final Double MAXIMUM_INTEREST_RATE_THRESHOLD = 0.5;
