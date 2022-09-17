@@ -1,5 +1,10 @@
-package com.ironhack.sergitubertironbank.accounts.shared;
+package com.ironhack.sergitubertironbank.accounts.shared.services;
 
+import com.ironhack.sergitubertironbank.accounts.shared.domain.BaseAccount;
+import com.ironhack.sergitubertironbank.accounts.shared.domain.BaseAccountRepository;
+import com.ironhack.sergitubertironbank.accounts.shared.domain.Money;
+import com.ironhack.sergitubertironbank.accounts.shared.dto.ModifyBalanceDto;
+import com.ironhack.sergitubertironbank.accounts.shared.exceptions.AccountNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service

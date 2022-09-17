@@ -1,4 +1,4 @@
-package com.ironhack.sergitubertironbank.accounts.shared;
+package com.ironhack.sergitubertironbank.accounts.shared.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -1,8 +1,8 @@
 package com.ironhack.sergitubertironbank.accounts.CreditAccount;
 
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.dto.CreateCreditAccountDto;
-import com.ironhack.sergitubertironbank.accounts.shared.BaseAccount;
-import com.ironhack.sergitubertironbank.accounts.shared.Money;
+import com.ironhack.sergitubertironbank.accounts.shared.domain.BaseAccount;
+import com.ironhack.sergitubertironbank.accounts.shared.domain.Money;
 import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

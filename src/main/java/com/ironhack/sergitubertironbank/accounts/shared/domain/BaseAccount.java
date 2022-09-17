@@ -1,4 +1,4 @@
-package com.ironhack.sergitubertironbank.accounts.shared;
+package com.ironhack.sergitubertironbank.accounts.shared.domain;
 
 import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
 import lombok.Getter;

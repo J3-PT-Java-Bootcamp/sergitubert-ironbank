@@ -3,14 +3,18 @@ package com.ironhack.sergitubertironbank.accounts.controllers;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.CreditAccount;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.dto.CreateCreditAccountDto;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.services.CreditAccountCreator;
+import com.ironhack.sergitubertironbank.accounts.CreditAccount.services.CreditAccountFinder;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.services.OwnerNotFoundException;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.CheckingAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.SavingsAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.StudentCheckingAccount;
-import com.ironhack.sergitubertironbank.accounts.shared.AccountNotFoundException;
-import com.ironhack.sergitubertironbank.accounts.shared.BalanceModifier;
-import com.ironhack.sergitubertironbank.accounts.shared.BaseAccount;
-import com.ironhack.sergitubertironbank.accounts.shared.ModifyBalanceDto;
+import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.CheckingAccountFinder;
+import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.SavingsAccountFinder;
+import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.StudentCheckingAccountFinder;
+import com.ironhack.sergitubertironbank.accounts.shared.domain.BaseAccount;
+import com.ironhack.sergitubertironbank.accounts.shared.dto.ModifyBalanceDto;
+import com.ironhack.sergitubertironbank.accounts.shared.exceptions.AccountNotFoundException;
+import com.ironhack.sergitubertironbank.accounts.shared.services.BalanceModifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +27,19 @@ public class AccountsController {
 
     private final CreditAccountCreator creditAccountCreator;
     private final BalanceModifier balanceModifier;
+    private final SavingsAccountFinder savingsAccountFinder;
+    private final CheckingAccountFinder checkingAccountFinder;
+    private final StudentCheckingAccountFinder studentCheckingAccountFinder;
+    private final CreditAccountFinder creditAccountFinder;
 
-    public AccountsController(CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier) {
+
+    public AccountsController(CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier, SavingsAccountFinder savingsAccountFinder, CheckingAccountFinder checkingAccountFinder, StudentCheckingAccountFinder studentCheckingAccountFinder, CreditAccountFinder creditAccountFinder) {
         this.creditAccountCreator = creditAccountCreator;
         this.balanceModifier = balanceModifier;
+        this.savingsAccountFinder = savingsAccountFinder;
+        this.checkingAccountFinder = checkingAccountFinder;
+        this.studentCheckingAccountFinder = studentCheckingAccountFinder;
+        this.creditAccountFinder = creditAccountFinder;
     }
 
     @PostMapping("/credit")
@@ -42,23 +55,27 @@ public class AccountsController {
     }
 
     @GetMapping("/savings/{iban}")
-    public ResponseEntity<SavingsAccount> getSavingAccount(@PathVariable String iban) {
-        return null;
+    public ResponseEntity<SavingsAccount> getSavingAccount(@PathVariable String iban) throws AccountNotFoundException {
+        var account = this.savingsAccountFinder.execute(iban);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @GetMapping("/checking/{iban}")
-    public ResponseEntity<CheckingAccount> getCheckingAccount(@PathVariable String iban) {
-        return null;
+    public ResponseEntity<CheckingAccount> getCheckingAccount(@PathVariable String iban) throws AccountNotFoundException {
+        var account = this.checkingAccountFinder.execute(iban);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @GetMapping("/credit/{iban}")
-    public ResponseEntity<CreditAccount> getCreditAccount(@PathVariable String iban) {
-        return null;
+    public ResponseEntity<CreditAccount> getCreditAccount(@PathVariable String iban) throws AccountNotFoundException {
+        var account = this.creditAccountFinder.execute(iban);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @GetMapping("/student-checking/{iban}")
-    public ResponseEntity<StudentCheckingAccount> getStudentCheckingAccount(@PathVariable String iban) {
-        return null;
+    public ResponseEntity<StudentCheckingAccount> getStudentCheckingAccount(@PathVariable String iban) throws AccountNotFoundException {
+        var account = this.studentCheckingAccountFinder.execute(iban);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @PostMapping("/transfer")

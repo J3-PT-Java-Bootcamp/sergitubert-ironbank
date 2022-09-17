@@ -1,6 +1,6 @@
 package com.ironhack.sergitubertironbank.accounts.DebitAccount;
 
-import com.ironhack.sergitubertironbank.accounts.shared.BaseAccount;
+import com.ironhack.sergitubertironbank.accounts.shared.domain.BaseAccount;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
