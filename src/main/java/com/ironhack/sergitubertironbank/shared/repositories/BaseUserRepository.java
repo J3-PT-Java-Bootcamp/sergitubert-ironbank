@@ -1,4 +1,4 @@
-package com.ironhack.sergitubertironbank.users.shared;
+package com.ironhack.sergitubertironbank.shared.repositories;
 
 import com.ironhack.sergitubertironbank.shared.BaseUser;
 import org.springframework.data.jpa.repository.JpaRepository;

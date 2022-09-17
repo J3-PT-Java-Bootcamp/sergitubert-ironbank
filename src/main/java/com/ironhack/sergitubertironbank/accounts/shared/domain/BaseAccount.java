@@ -49,4 +49,8 @@ public abstract class BaseAccount {
         this.balance = balance;
         this.primaryOwner = primaryOwner;
     }
+
+    public void transfer(BaseAccount receiver, Money amount) {
+
+    }
 }

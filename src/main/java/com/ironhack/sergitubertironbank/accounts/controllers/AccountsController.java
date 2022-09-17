@@ -13,17 +13,23 @@ import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.SavingsAc
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.StudentCheckingAccountFinder;
 import com.ironhack.sergitubertironbank.accounts.shared.domain.BaseAccount;
 import com.ironhack.sergitubertironbank.accounts.shared.dto.ModifyBalanceDto;
+import com.ironhack.sergitubertironbank.accounts.shared.dto.TransferDto;
 import com.ironhack.sergitubertironbank.accounts.shared.exceptions.AccountNotFoundException;
 import com.ironhack.sergitubertironbank.accounts.shared.services.BalanceModifier;
+import com.ironhack.sergitubertironbank.accounts.shared.services.Transfer;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/accounts")
 public class AccountsController {
+
+    private final HttpServletRequest request;
 
     private final CreditAccountCreator creditAccountCreator;
     private final BalanceModifier balanceModifier;
@@ -31,15 +37,23 @@ public class AccountsController {
     private final CheckingAccountFinder checkingAccountFinder;
     private final StudentCheckingAccountFinder studentCheckingAccountFinder;
     private final CreditAccountFinder creditAccountFinder;
+    private final Transfer transfer;
 
 
-    public AccountsController(CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier, SavingsAccountFinder savingsAccountFinder, CheckingAccountFinder checkingAccountFinder, StudentCheckingAccountFinder studentCheckingAccountFinder, CreditAccountFinder creditAccountFinder) {
+    public AccountsController(HttpServletRequest request, CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier, SavingsAccountFinder savingsAccountFinder, CheckingAccountFinder checkingAccountFinder, StudentCheckingAccountFinder studentCheckingAccountFinder, CreditAccountFinder creditAccountFinder, Transfer transfer) {
+        this.request = request;
         this.creditAccountCreator = creditAccountCreator;
         this.balanceModifier = balanceModifier;
         this.savingsAccountFinder = savingsAccountFinder;
         this.checkingAccountFinder = checkingAccountFinder;
         this.studentCheckingAccountFinder = studentCheckingAccountFinder;
         this.creditAccountFinder = creditAccountFinder;
+        this.transfer = transfer;
+    }
+
+    private KeycloakSecurityContext getKeycloakSecurityContext()
+    {
+        return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
     }
 
     @PostMapping("/credit")
@@ -79,12 +93,8 @@ public class AccountsController {
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<Object> transfer(@RequestBody @Valid Object transferDto) {
-        //log transactions
-        // validate fromAccount is from the user requesting
-        // validate toAccount exists
-        // validate both accounts are not frozen
-        // validate fromAccount enough balance
-        return null;
+    public ResponseEntity<Object> transfer(@RequestBody @Valid TransferDto dto) {
+        this.transfer.execute(dto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
