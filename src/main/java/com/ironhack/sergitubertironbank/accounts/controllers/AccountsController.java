@@ -11,7 +11,9 @@ import com.ironhack.sergitubertironbank.accounts.DebitAccount.StudentCheckingAcc
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.CheckingAccountFinder;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.SavingsAccountFinder;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.StudentCheckingAccountFinder;
+import com.ironhack.sergitubertironbank.accounts.shared.domain.AccountFrozenException;
 import com.ironhack.sergitubertironbank.accounts.shared.domain.BaseAccount;
+import com.ironhack.sergitubertironbank.accounts.shared.domain.NotEnoughBalanceException;
 import com.ironhack.sergitubertironbank.accounts.shared.dto.ModifyBalanceDto;
 import com.ironhack.sergitubertironbank.accounts.shared.dto.TransferDto;
 import com.ironhack.sergitubertironbank.accounts.shared.exceptions.AccountNotFoundException;
@@ -93,7 +95,7 @@ public class AccountsController {
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<Object> transfer(@RequestBody @Valid TransferDto dto) {
+    public ResponseEntity<Object> transfer(@RequestBody @Valid TransferDto dto) throws AccountNotFoundException, AccountFrozenException, NotEnoughBalanceException {
         this.transfer.execute(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Getter
@@ -18,7 +19,7 @@ import java.time.Instant;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class BaseAccount {
 
-    protected static final Integer PENALTY_FEE = 40;
+    protected static final Money PENALTY_FEE = new Money(new BigDecimal("40.0"));
 
     @Id
     @Column(name = "iban", nullable = false)
@@ -50,7 +51,22 @@ public abstract class BaseAccount {
         this.primaryOwner = primaryOwner;
     }
 
-    public void transfer(BaseAccount receiver, Money amount) {
+    public abstract boolean isFrozen();
+    public abstract Money getMinimumBalanceThreshold();
+
+    public void transfer(BaseAccount receiver, Money amount) throws AccountFrozenException, NotEnoughBalanceException {
+        if (this.isFrozen()) throw new AccountFrozenException(this.getIban());
+        if(receiver.isFrozen()) throw new AccountFrozenException(receiver.getIban());
+
+        if(this.getBalance().getAmount().compareTo(amount.getAmount()) < 0) {
+            throw new NotEnoughBalanceException(this.getIban());
+        }
+
+        this.getBalance().decreaseAmount(amount.getAmount());
+        receiver.getBalance().increaseAmount(amount.getAmount());
+        if(this.getBalance().getAmount().compareTo(this.getMinimumBalanceThreshold().getAmount()) < 0) {
+            this.getBalance().decreaseAmount(BaseAccount.PENALTY_FEE);
+        }
 
     }
 }

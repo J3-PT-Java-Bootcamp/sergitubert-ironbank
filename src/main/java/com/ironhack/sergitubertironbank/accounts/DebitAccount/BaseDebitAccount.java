@@ -15,9 +15,16 @@ import javax.persistence.MappedSuperclass;
 @Setter
 @AllArgsConstructor
 @MappedSuperclass
-public class BaseDebitAccount extends BaseAccount {
+public abstract class BaseDebitAccount extends BaseAccount {
     private String secretKey;
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Override
+    public boolean isFrozen() {
+        return this.status == Status.FROZEN;
+    }
+
+
 }

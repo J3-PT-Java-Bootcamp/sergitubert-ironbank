@@ -53,4 +53,8 @@ public class CreditAccount extends BaseAccount {
         return CreditAccount.create(balance, primaryOwner, creditLimit, interestRate);
     }
 
+    @Override
+    public boolean isFrozen() {
+        return false;
+    }
 }
