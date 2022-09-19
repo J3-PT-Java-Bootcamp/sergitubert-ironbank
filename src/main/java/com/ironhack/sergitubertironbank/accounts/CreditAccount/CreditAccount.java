@@ -23,6 +23,8 @@ public class CreditAccount extends BaseAccount {
 
     private final static Money DEFAULT_CREDIT_LIMIT = new Money(new BigDecimal("100.0"));
     private final static Money MAXIMUM_CREDIT_THRESHOLD = new Money(new BigDecimal(CreditAccount.MAXIMUM_CREDIT_THRESHOLD_RAW));
+    private static final Money MINIMUM_BALANCE_THRESHOLD = new Money(new BigDecimal("0.0"));
+
     private final static BigDecimal DEFAULT_INTEREST_RATE = new BigDecimal("0.2");
     private final static BigDecimal MINIMUM_INTEREST_RATE_THRESHOLD = new BigDecimal(CreditAccount.MINIMUM_INTEREST_RATE_THRESHOLD_RAW);
 
@@ -56,5 +58,10 @@ public class CreditAccount extends BaseAccount {
     @Override
     public boolean isFrozen() {
         return false;
+    }
+
+    @Override
+    public Money getMinimumBalanceThreshold() {
+        return CreditAccount.MINIMUM_BALANCE_THRESHOLD;
     }
 }
