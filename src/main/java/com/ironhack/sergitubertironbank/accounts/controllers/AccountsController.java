@@ -9,11 +9,9 @@ import com.ironhack.sergitubertironbank.accounts.DebitAccount.BaseDebitAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.CheckingAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.SavingsAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.StudentCheckingAccount;
+import com.ironhack.sergitubertironbank.accounts.DebitAccount.dto.CreateCheckingAccountDto;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.dto.CreateSavingsAccountDto;
-import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.CheckingAccountFinder;
-import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.SavingsAccountCreator;
-import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.SavingsAccountFinder;
-import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.StudentCheckingAccountFinder;
+import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.*;
 import com.ironhack.sergitubertironbank.accounts.shared.domain.AccountFrozenException;
 import com.ironhack.sergitubertironbank.accounts.shared.domain.BaseAccount;
 import com.ironhack.sergitubertironbank.accounts.shared.domain.NotEnoughBalanceException;
@@ -43,10 +41,11 @@ public class AccountsController {
     private final StudentCheckingAccountFinder studentCheckingAccountFinder;
     private final CreditAccountFinder creditAccountFinder;
     private final SavingsAccountCreator savingsAccountCreator;
+    private final CheckingAccountCreator checkingAccountCreator;
     private final Transfer transfer;
 
 
-    public AccountsController(HttpServletRequest request, CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier, SavingsAccountFinder savingsAccountFinder, CheckingAccountFinder checkingAccountFinder, StudentCheckingAccountFinder studentCheckingAccountFinder, CreditAccountFinder creditAccountFinder, SavingsAccountCreator savingsAccountCreator, Transfer transfer) {
+    public AccountsController(HttpServletRequest request, CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier, SavingsAccountFinder savingsAccountFinder, CheckingAccountFinder checkingAccountFinder, StudentCheckingAccountFinder studentCheckingAccountFinder, CreditAccountFinder creditAccountFinder, SavingsAccountCreator savingsAccountCreator, CheckingAccountCreator checkingAccountCreator, Transfer transfer) {
         this.request = request;
         this.creditAccountCreator = creditAccountCreator;
         this.balanceModifier = balanceModifier;
@@ -55,6 +54,7 @@ public class AccountsController {
         this.studentCheckingAccountFinder = studentCheckingAccountFinder;
         this.creditAccountFinder = creditAccountFinder;
         this.savingsAccountCreator = savingsAccountCreator;
+        this.checkingAccountCreator = checkingAccountCreator;
         this.transfer = transfer;
     }
 
@@ -69,10 +69,10 @@ public class AccountsController {
     }
 
     @PostMapping("/checking")
-    public ResponseEntity<BaseDebitAccount> createCheckingAccount(@RequestBody @Valid CreateCreditAccountDto dto) throws OwnerNotFoundException {
-//        var creditAccount = this.creditAccountCreator.execute(dto);
-//        return new ResponseEntity<>(creditAccount, HttpStatus.CREATED);
-        return null;
+    public ResponseEntity<BaseDebitAccount> createCheckingAccount(@RequestBody @Valid CreateCheckingAccountDto dto) throws OwnerNotFoundException, UserIsNotStudentException {
+        // TODO: Test create checking account/ student account 
+        var account = this.checkingAccountCreator.execute(dto);
+        return new ResponseEntity<>(account, HttpStatus.CREATED);
     }
 
     @PostMapping("/savings")

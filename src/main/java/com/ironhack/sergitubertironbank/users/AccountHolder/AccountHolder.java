@@ -10,10 +10,12 @@ import com.ironhack.sergitubertironbank.users.AccountHolder.dto.CreateAccountHol
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Entity
 public class AccountHolder extends BaseUser {
+    public  static final Integer MAXIMUM_STUDENT_AGE_THRESHOLD = 24;
     private LocalDate dateOfBirth;
 
     @OneToMany(mappedBy = "user")
@@ -50,6 +52,15 @@ public class AccountHolder extends BaseUser {
     public AccountHolder(String name, LocalDate dateOfBirth, String email) {
         super(name, email);
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public boolean hasStudentAge() {
+        return this.getAge() <= AccountHolder.MAXIMUM_STUDENT_AGE_THRESHOLD;
+    }
+
+    public Integer getAge() {
+        LocalDate currentDate = LocalDate.now();
+        return Period.between(this.dateOfBirth, currentDate).getYears();
     }
 
     public static AccountHolder fromDto(CreateAccountHolderDto dto) {
