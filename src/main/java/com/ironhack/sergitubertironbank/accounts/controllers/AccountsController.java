@@ -70,7 +70,7 @@ public class AccountsController {
 
     @PostMapping("/checking")
     public ResponseEntity<BaseDebitAccount> createCheckingAccount(@RequestBody @Valid CreateCheckingAccountDto dto) throws OwnerNotFoundException, UserIsNotStudentException {
-        // TODO: Test create checking account/ student account 
+        // TODO: Test create checking account/ student account
         var account = this.checkingAccountCreator.execute(dto);
         return new ResponseEntity<>(account, HttpStatus.CREATED);
     }
@@ -113,6 +113,7 @@ public class AccountsController {
 
     @PostMapping("/transfer")
     public ResponseEntity<Object> transfer(@RequestBody @Valid TransferDto dto) throws AccountNotFoundException, AccountFrozenException, NotEnoughBalanceException {
+        // TODO: return some transfer details object
         this.transfer.execute(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
