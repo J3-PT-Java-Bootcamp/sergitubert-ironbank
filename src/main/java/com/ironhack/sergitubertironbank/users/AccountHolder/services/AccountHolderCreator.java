@@ -1,5 +1,6 @@
 package com.ironhack.sergitubertironbank.users.AccountHolder.services;
 
+import com.ironhack.sergitubertironbank.shared.repositories.BaseUserRepository;
 import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
 import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolderRepository;
 import com.ironhack.sergitubertironbank.users.AccountHolder.dto.CreateAccountHolderDto;
@@ -8,7 +9,6 @@ import com.ironhack.sergitubertironbank.users.keycloak.CreateKeycloakUserDto;
 import com.ironhack.sergitubertironbank.users.keycloak.KeycloakAdminClientService;
 import com.ironhack.sergitubertironbank.users.keycloak.KeycloakGroups;
 import com.ironhack.sergitubertironbank.users.keycloak.KeycloakUserNotCreatedException;
-import com.ironhack.sergitubertironbank.shared.repositories.BaseUserRepository;
 import org.springframework.stereotype.Service;
 
 @Service

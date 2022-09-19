@@ -18,7 +18,6 @@ public final class CreditAccountCreator {
 
     public CreditAccount execute(CreateCreditAccountDto dto) throws OwnerNotFoundException {
         var user = this.accountHolderRepository.findById(dto.getOwnerId()).orElseThrow(() -> new OwnerNotFoundException(dto.getOwnerId()));
-        System.out.println(user);
         var account = CreditAccount.fromDto(dto, user);
         this.repository.save(account);
         return account;

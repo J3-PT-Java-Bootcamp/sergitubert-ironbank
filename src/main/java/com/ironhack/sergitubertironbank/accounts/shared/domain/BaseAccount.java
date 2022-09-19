@@ -52,19 +52,20 @@ public abstract class BaseAccount {
     }
 
     public abstract boolean isFrozen();
+
     public abstract Money getMinimumBalanceThreshold();
 
     public void transfer(BaseAccount receiver, Money amount) throws AccountFrozenException, NotEnoughBalanceException {
         if (this.isFrozen()) throw new AccountFrozenException(this.getIban());
-        if(receiver.isFrozen()) throw new AccountFrozenException(receiver.getIban());
+        if (receiver.isFrozen()) throw new AccountFrozenException(receiver.getIban());
 
-        if(this.getBalance().getAmount().compareTo(amount.getAmount()) < 0) {
+        if (this.getBalance().getAmount().compareTo(amount.getAmount()) < 0) {
             throw new NotEnoughBalanceException(this.getIban());
         }
 
         this.getBalance().decreaseAmount(amount.getAmount());
         receiver.getBalance().increaseAmount(amount.getAmount());
-        if(this.getBalance().getAmount().compareTo(this.getMinimumBalanceThreshold().getAmount()) < 0) {
+        if (this.getBalance().getAmount().compareTo(this.getMinimumBalanceThreshold().getAmount()) < 0) {
             this.getBalance().decreaseAmount(BaseAccount.PENALTY_FEE);
         }
 

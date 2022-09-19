@@ -5,10 +5,13 @@ import com.ironhack.sergitubertironbank.accounts.CreditAccount.dto.CreateCreditA
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.services.CreditAccountCreator;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.services.CreditAccountFinder;
 import com.ironhack.sergitubertironbank.accounts.CreditAccount.services.OwnerNotFoundException;
+import com.ironhack.sergitubertironbank.accounts.DebitAccount.BaseDebitAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.CheckingAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.SavingsAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.StudentCheckingAccount;
+import com.ironhack.sergitubertironbank.accounts.DebitAccount.dto.CreateSavingsAccountDto;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.CheckingAccountFinder;
+import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.SavingsAccountCreator;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.SavingsAccountFinder;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.services.StudentCheckingAccountFinder;
 import com.ironhack.sergitubertironbank.accounts.shared.domain.AccountFrozenException;
@@ -39,10 +42,11 @@ public class AccountsController {
     private final CheckingAccountFinder checkingAccountFinder;
     private final StudentCheckingAccountFinder studentCheckingAccountFinder;
     private final CreditAccountFinder creditAccountFinder;
+    private final SavingsAccountCreator savingsAccountCreator;
     private final Transfer transfer;
 
 
-    public AccountsController(HttpServletRequest request, CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier, SavingsAccountFinder savingsAccountFinder, CheckingAccountFinder checkingAccountFinder, StudentCheckingAccountFinder studentCheckingAccountFinder, CreditAccountFinder creditAccountFinder, Transfer transfer) {
+    public AccountsController(HttpServletRequest request, CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier, SavingsAccountFinder savingsAccountFinder, CheckingAccountFinder checkingAccountFinder, StudentCheckingAccountFinder studentCheckingAccountFinder, CreditAccountFinder creditAccountFinder, SavingsAccountCreator savingsAccountCreator, Transfer transfer) {
         this.request = request;
         this.creditAccountCreator = creditAccountCreator;
         this.balanceModifier = balanceModifier;
@@ -50,18 +54,31 @@ public class AccountsController {
         this.checkingAccountFinder = checkingAccountFinder;
         this.studentCheckingAccountFinder = studentCheckingAccountFinder;
         this.creditAccountFinder = creditAccountFinder;
+        this.savingsAccountCreator = savingsAccountCreator;
         this.transfer = transfer;
     }
 
-    private KeycloakSecurityContext getKeycloakSecurityContext()
-    {
+    private KeycloakSecurityContext getKeycloakSecurityContext() {
         return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
     }
 
     @PostMapping("/credit")
     public ResponseEntity<CreditAccount> createCreditAccount(@RequestBody @Valid CreateCreditAccountDto dto) throws OwnerNotFoundException {
-        var creditAccount = this.creditAccountCreator.execute(dto);
-        return new ResponseEntity<>(creditAccount, HttpStatus.CREATED);
+        var account = this.creditAccountCreator.execute(dto);
+        return new ResponseEntity<>(account, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/checking")
+    public ResponseEntity<BaseDebitAccount> createCheckingAccount(@RequestBody @Valid CreateCreditAccountDto dto) throws OwnerNotFoundException {
+//        var creditAccount = this.creditAccountCreator.execute(dto);
+//        return new ResponseEntity<>(creditAccount, HttpStatus.CREATED);
+        return null;
+    }
+
+    @PostMapping("/savings")
+    public ResponseEntity<SavingsAccount> createSavingsAccount(@RequestBody @Valid CreateSavingsAccountDto dto) throws OwnerNotFoundException {
+        var account = this.savingsAccountCreator.execute(dto);
+        return new ResponseEntity<>(account, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{iban}/balance")

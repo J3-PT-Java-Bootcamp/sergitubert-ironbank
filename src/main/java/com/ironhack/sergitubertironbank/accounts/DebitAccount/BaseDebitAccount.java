@@ -1,6 +1,8 @@
 package com.ironhack.sergitubertironbank.accounts.DebitAccount;
 
 import com.ironhack.sergitubertironbank.accounts.shared.domain.BaseAccount;
+import com.ironhack.sergitubertironbank.accounts.shared.domain.Money;
+import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,11 @@ public abstract class BaseDebitAccount extends BaseAccount {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    public BaseDebitAccount(String iban, Money balance, AccountHolder primaryOwner, Status status) {
+        super(iban, balance, primaryOwner);
+        this.status = status;
+    }
 
     @Override
     public boolean isFrozen() {
