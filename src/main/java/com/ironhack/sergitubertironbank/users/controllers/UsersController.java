@@ -1,8 +1,11 @@
 package com.ironhack.sergitubertironbank.users.controllers;
 
 import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
+import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolderRepository;
 import com.ironhack.sergitubertironbank.users.AccountHolder.dto.CreateAccountHolderDto;
+import com.ironhack.sergitubertironbank.users.AccountHolder.exceptions.AccountHolderNotFoundException;
 import com.ironhack.sergitubertironbank.users.AccountHolder.services.AccountHolderCreator;
+import com.ironhack.sergitubertironbank.users.AccountHolder.services.AccountHolderFinder;
 import com.ironhack.sergitubertironbank.users.Admin.Admin;
 import com.ironhack.sergitubertironbank.users.Admin.dto.CreateAdminDto;
 import com.ironhack.sergitubertironbank.users.Admin.services.AdminCreator;
@@ -14,10 +17,7 @@ import com.ironhack.sergitubertironbank.users.keycloak.LoginFailedException;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,18 +27,31 @@ public final class UsersController {
     private final AdminCreator adminCreator;
     private final AccountHolderCreator accountHolderCreator;
 
+    private final AccountHolderFinder accountHolderFinder;
+
     private final KeycloakAdminClientService kc;
 
-    public UsersController(AdminCreator adminCreator, AccountHolderCreator accountHolderCreator, KeycloakAdminClientService kc) {
+    private final AccountHolderRepository accountHolderRepository;
+
+    public UsersController(AdminCreator adminCreator, AccountHolderCreator accountHolderCreator, AccountHolderFinder accountHolderFinder, KeycloakAdminClientService kc, AccountHolderRepository accountHolderRepository) {
         this.adminCreator = adminCreator;
         this.accountHolderCreator = accountHolderCreator;
+        this.accountHolderFinder = accountHolderFinder;
         this.kc = kc;
+        this.accountHolderRepository = accountHolderRepository;
     }
 
     @PostMapping("/admin")
     public ResponseEntity<Admin> createAdmin(@RequestBody @Valid CreateAdminDto dto) throws KeycloakUserNotCreatedException, UserEmailAlreadyExists {
         var admin = this.adminCreator.execute(dto);
         return new ResponseEntity<>(admin, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<AccountHolder> whoAmI() throws AccountHolderNotFoundException {
+        // TODO: Grab ID from principal
+        var me = this.accountHolderFinder.execute(1L);
+        return new ResponseEntity<>(me, HttpStatus.OK);
     }
 
     @PostMapping("/account-holder")
@@ -49,7 +62,7 @@ public final class UsersController {
 
     @PostMapping("/login")
     public ResponseEntity<AccessTokenResponse> login(@Valid @RequestBody LoginDto dto) throws LoginFailedException {
-        return new ResponseEntity<>(kc.login(dto.getUsername(), dto.getPassword()), HttpStatus.CREATED);
+        return new ResponseEntity<>(kc.login(dto), HttpStatus.CREATED);
     }
 
 }

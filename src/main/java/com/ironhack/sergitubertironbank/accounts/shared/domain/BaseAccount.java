@@ -1,5 +1,6 @@
 package com.ironhack.sergitubertironbank.accounts.shared.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,10 +34,12 @@ public abstract class BaseAccount {
     private Money balance;
 
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private AccountHolder primaryOwner;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private AccountHolder secondaryOwner;

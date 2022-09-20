@@ -6,14 +6,17 @@ import com.ironhack.sergitubertironbank.accounts.DebitAccount.SavingsAccount;
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.StudentCheckingAccount;
 import com.ironhack.sergitubertironbank.shared.BaseUser;
 import com.ironhack.sergitubertironbank.users.AccountHolder.dto.CreateAccountHolderDto;
+import lombok.Getter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
 @Entity
+@Getter
 public class AccountHolder extends BaseUser {
     public static final Integer MAXIMUM_STUDENT_AGE_THRESHOLD = 24;
     private LocalDate dateOfBirth;
