@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 public class AccountHolder extends BaseUser {
-    public  static final Integer MAXIMUM_STUDENT_AGE_THRESHOLD = 24;
+    public static final Integer MAXIMUM_STUDENT_AGE_THRESHOLD = 24;
     private LocalDate dateOfBirth;
 
     @OneToMany(mappedBy = "user")

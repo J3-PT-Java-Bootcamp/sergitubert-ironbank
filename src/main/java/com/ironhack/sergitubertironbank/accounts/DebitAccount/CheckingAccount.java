@@ -1,7 +1,6 @@
 package com.ironhack.sergitubertironbank.accounts.DebitAccount;
 
 import com.ironhack.sergitubertironbank.accounts.DebitAccount.dto.CreateCheckingAccountDto;
-import com.ironhack.sergitubertironbank.accounts.DebitAccount.dto.CreateStudentCheckingAccountDto;
 import com.ironhack.sergitubertironbank.accounts.shared.domain.Money;
 import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,6 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class CheckingAccount extends BaseDebitAccount {
     public static final String MINIMUM_BALANCE_THRESHOLD_RAW = "250.0";
@@ -37,6 +35,7 @@ public class CheckingAccount extends BaseDebitAccount {
         Iban iban = Iban.random(CountryCode.ES);
         return new CheckingAccount(iban.toString(), balance, primaryOwner, Status.ACTIVE);
     }
+
     @Override
     public Money getMinimumBalanceThreshold() {
         return CheckingAccount.MINIMUM_BALANCE_THRESHOLD;

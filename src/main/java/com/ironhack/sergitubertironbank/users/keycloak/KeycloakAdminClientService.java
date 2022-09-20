@@ -2,12 +2,15 @@ package com.ironhack.sergitubertironbank.users.keycloak;
 
 import com.ironhack.sergitubertironbank.config.keycloak.KeycloakProvider;
 import lombok.extern.java.Log;
+import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UsersResource;
+import org.keycloak.representations.AccessTokenResponse;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
@@ -57,5 +60,15 @@ public class KeycloakAdminClientService {
             return createdUser.getId();
         }
         throw new KeycloakUserNotCreatedException();
+    }
+
+    public AccessTokenResponse login(String username, String password) throws LoginFailedException {
+        Keycloak keycloak = kcProvider.newKeycloakBuilderWithPasswordCredentials(username, password).build();
+        try {
+            return keycloak.tokenManager().getAccessToken();
+        } catch (BadRequestException ex) {
+            throw new LoginFailedException();
+        }
+
     }
 }
