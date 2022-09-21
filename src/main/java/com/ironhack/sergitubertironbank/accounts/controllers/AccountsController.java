@@ -20,19 +20,16 @@ import com.ironhack.sergitubertironbank.accounts.shared.dto.TransferDto;
 import com.ironhack.sergitubertironbank.accounts.shared.exceptions.AccountNotFoundException;
 import com.ironhack.sergitubertironbank.accounts.shared.services.BalanceModifier;
 import com.ironhack.sergitubertironbank.accounts.shared.services.Transfer;
-import org.keycloak.KeycloakSecurityContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/accounts")
 public class AccountsController {
-
-    private final HttpServletRequest request;
 
     private final CreditAccountCreator creditAccountCreator;
     private final BalanceModifier balanceModifier;
@@ -45,8 +42,7 @@ public class AccountsController {
     private final Transfer transfer;
 
 
-    public AccountsController(HttpServletRequest request, CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier, SavingsAccountFinder savingsAccountFinder, CheckingAccountFinder checkingAccountFinder, StudentCheckingAccountFinder studentCheckingAccountFinder, CreditAccountFinder creditAccountFinder, SavingsAccountCreator savingsAccountCreator, CheckingAccountCreator checkingAccountCreator, Transfer transfer) {
-        this.request = request;
+    public AccountsController(CreditAccountCreator creditAccountCreator, BalanceModifier balanceModifier, SavingsAccountFinder savingsAccountFinder, CheckingAccountFinder checkingAccountFinder, StudentCheckingAccountFinder studentCheckingAccountFinder, CreditAccountFinder creditAccountFinder, SavingsAccountCreator savingsAccountCreator, CheckingAccountCreator checkingAccountCreator, Transfer transfer) {
         this.creditAccountCreator = creditAccountCreator;
         this.balanceModifier = balanceModifier;
         this.savingsAccountFinder = savingsAccountFinder;
@@ -56,10 +52,6 @@ public class AccountsController {
         this.savingsAccountCreator = savingsAccountCreator;
         this.checkingAccountCreator = checkingAccountCreator;
         this.transfer = transfer;
-    }
-
-    private KeycloakSecurityContext getKeycloakSecurityContext() {
-        return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
     }
 
     @PostMapping("/credit")
@@ -88,8 +80,9 @@ public class AccountsController {
     }
 
     @GetMapping("/savings/{iban}")
-    public ResponseEntity<SavingsAccount> getSavingAccount(@PathVariable String iban) throws AccountNotFoundException {
+    public ResponseEntity<SavingsAccount> getSavingAccount(@PathVariable String iban, Principal principal) throws AccountNotFoundException {
         var account = this.savingsAccountFinder.execute(iban);
+        System.out.println(principal.getName());
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
