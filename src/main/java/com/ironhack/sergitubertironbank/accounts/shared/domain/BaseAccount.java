@@ -58,6 +58,9 @@ public abstract class BaseAccount {
 
     public abstract Money getMinimumBalanceThreshold();
 
+    public boolean isOwner(Long userId) {
+        return this.primaryOwner.getId().equals(userId) || this.secondaryOwner.getId().equals(userId);
+    }
     public void transfer(BaseAccount receiver, Money amount) throws AccountFrozenException, NotEnoughBalanceException {
         if (this.isFrozen()) throw new AccountFrozenException(this.getIban());
         if (receiver.isFrozen()) throw new AccountFrozenException(receiver.getIban());

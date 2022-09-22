@@ -6,7 +6,8 @@ import com.ironhack.sergitubertironbank.accounts.shared.domain.Money;
 import com.ironhack.sergitubertironbank.accounts.shared.domain.NotEnoughBalanceException;
 import com.ironhack.sergitubertironbank.accounts.shared.dto.TransferDto;
 import com.ironhack.sergitubertironbank.accounts.shared.exceptions.AccountNotFoundException;
-import com.ironhack.sergitubertironbank.shared.repositories.BaseUserRepository;
+import com.ironhack.sergitubertironbank.users.AccountHolder.exceptions.AccountHolderNotFoundException;
+import com.ironhack.sergitubertironbank.users.AccountHolder.services.AccountHolderFinder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -15,21 +16,22 @@ import java.util.List;
 @Service
 public final class Transfer {
     private final BaseAccountRepository accountRepository;
-    private final BaseUserRepository userRepository;
+    private final AccountHolderFinder accountHolderFinder;
 
     private final TransactionTemplate transaction;
 
 
-    public Transfer(BaseAccountRepository repository, BaseUserRepository userRepository, TransactionTemplate transaction) {
+    public Transfer(BaseAccountRepository repository, AccountHolderFinder accountHolderFinder, TransactionTemplate transaction) {
         this.accountRepository = repository;
-        this.userRepository = userRepository;
+        this.accountHolderFinder = accountHolderFinder;
         this.transaction = transaction;
     }
 
-    public void execute(TransferDto dto) throws AccountNotFoundException, AccountFrozenException, NotEnoughBalanceException {
-        // validate fromAccount is from the user requesting
+    public void execute(TransferDto dto, String keycloakId) throws AccountNotFoundException, AccountFrozenException, NotEnoughBalanceException, AccountHolderNotFoundException {
+        var requester = this.accountHolderFinder.execute(keycloakId);
         var fromAccount = this.accountRepository.findById(dto.getSenderIban())
                 .orElseThrow(() -> new AccountNotFoundException(dto.getSenderIban()));
+        if(!fromAccount.isOwner(requester.getId())) throw new AccountNotFoundException(dto.getSenderIban());
         var toAccount = this.accountRepository.findById(dto.getReceiverIban())
                 .orElseThrow(() -> new AccountNotFoundException(dto.getReceiverIban()));
 
@@ -39,7 +41,5 @@ public final class Transfer {
             return status;
         });
         //log transactions
-
-        // save accounts in one db transaction
     }
 }

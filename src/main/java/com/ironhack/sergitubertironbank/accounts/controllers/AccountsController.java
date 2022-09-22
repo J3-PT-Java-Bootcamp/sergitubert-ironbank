@@ -20,6 +20,7 @@ import com.ironhack.sergitubertironbank.accounts.shared.dto.TransferDto;
 import com.ironhack.sergitubertironbank.accounts.shared.exceptions.AccountNotFoundException;
 import com.ironhack.sergitubertironbank.accounts.shared.services.BalanceModifier;
 import com.ironhack.sergitubertironbank.accounts.shared.services.Transfer;
+import com.ironhack.sergitubertironbank.users.AccountHolder.exceptions.AccountHolderNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -80,34 +81,33 @@ public class AccountsController {
     }
 
     @GetMapping("/savings/{iban}")
-    public ResponseEntity<SavingsAccount> getSavingAccount(@PathVariable String iban, Principal principal) throws AccountNotFoundException {
-        var account = this.savingsAccountFinder.execute(iban);
-        System.out.println(principal.getName());
+    public ResponseEntity<SavingsAccount> getSavingAccount(@PathVariable String iban, Principal principal) throws AccountNotFoundException, AccountHolderNotFoundException {
+        var account = this.savingsAccountFinder.execute(iban, principal.getName());
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @GetMapping("/checking/{iban}")
-    public ResponseEntity<CheckingAccount> getCheckingAccount(@PathVariable String iban) throws AccountNotFoundException {
-        var account = this.checkingAccountFinder.execute(iban);
+    public ResponseEntity<CheckingAccount> getCheckingAccount(@PathVariable String iban, Principal principal) throws AccountNotFoundException, AccountHolderNotFoundException {
+        var account = this.checkingAccountFinder.execute(iban, principal.getName());
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @GetMapping("/credit/{iban}")
-    public ResponseEntity<CreditAccount> getCreditAccount(@PathVariable String iban) throws AccountNotFoundException {
-        var account = this.creditAccountFinder.execute(iban);
+    public ResponseEntity<CreditAccount> getCreditAccount(@PathVariable String iban, Principal principal) throws AccountNotFoundException, AccountHolderNotFoundException {
+        var account = this.creditAccountFinder.execute(iban, principal.getName());
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @GetMapping("/student-checking/{iban}")
-    public ResponseEntity<StudentCheckingAccount> getStudentCheckingAccount(@PathVariable String iban) throws AccountNotFoundException {
-        var account = this.studentCheckingAccountFinder.execute(iban);
+    public ResponseEntity<StudentCheckingAccount> getStudentCheckingAccount(@PathVariable String iban, Principal principal) throws AccountNotFoundException, AccountHolderNotFoundException {
+        var account = this.studentCheckingAccountFinder.execute(iban, principal.getName());
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<Object> transfer(@RequestBody @Valid TransferDto dto) throws AccountNotFoundException, AccountFrozenException, NotEnoughBalanceException {
+    public ResponseEntity<Object> transfer(@RequestBody @Valid TransferDto dto, Principal principal) throws AccountNotFoundException, AccountFrozenException, NotEnoughBalanceException {
         // TODO: return some transfer details object
-        this.transfer.execute(dto);
+        this.transfer.execute(dto, principal.getName());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
