@@ -105,7 +105,7 @@ public class AccountsController {
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<Object> transfer(@RequestBody @Valid TransferDto dto, Principal principal) throws AccountNotFoundException, AccountFrozenException, NotEnoughBalanceException {
+    public ResponseEntity<Object> transfer(@RequestBody @Valid TransferDto dto, Principal principal) throws AccountNotFoundException, AccountFrozenException, NotEnoughBalanceException, AccountHolderNotFoundException {
         // TODO: return some transfer details object
         this.transfer.execute(dto, principal.getName());
         return new ResponseEntity<>(HttpStatus.CREATED);

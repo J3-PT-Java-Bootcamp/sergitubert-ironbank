@@ -31,7 +31,7 @@ public final class Transfer {
         var requester = this.accountHolderFinder.execute(keycloakId);
         var fromAccount = this.accountRepository.findById(dto.getSenderIban())
                 .orElseThrow(() -> new AccountNotFoundException(dto.getSenderIban()));
-        if(!fromAccount.isOwner(requester.getId())) throw new AccountNotFoundException(dto.getSenderIban());
+        if(!requester.isAdmin() && !fromAccount.isOwner(requester)) throw new AccountNotFoundException(dto.getSenderIban());
         var toAccount = this.accountRepository.findById(dto.getReceiverIban())
                 .orElseThrow(() -> new AccountNotFoundException(dto.getReceiverIban()));
 

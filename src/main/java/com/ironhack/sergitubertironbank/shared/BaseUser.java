@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class BaseUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +25,14 @@ public class BaseUser {
 
     private String keycloakId;
 
+    @Column(insertable = false, updatable = false)
+    private String dtype;
     public BaseUser(String name, String email) {
         this.name = name;
         this.email = email;
+    }
+
+    public boolean isAdmin() {
+        return this.dtype.equals("Admin");
     }
 }

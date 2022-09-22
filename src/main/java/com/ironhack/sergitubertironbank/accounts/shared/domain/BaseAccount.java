@@ -1,6 +1,7 @@
 package com.ironhack.sergitubertironbank.accounts.shared.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ironhack.sergitubertironbank.shared.BaseUser;
 import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,8 +59,8 @@ public abstract class BaseAccount {
 
     public abstract Money getMinimumBalanceThreshold();
 
-    public boolean isOwner(Long userId) {
-        return this.primaryOwner.getId().equals(userId) || this.secondaryOwner.getId().equals(userId);
+    public boolean isOwner(BaseUser user) {
+        return this.primaryOwner.getId().equals(user.getId()) || this.secondaryOwner.getId().equals(user.getId());
     }
     public void transfer(BaseAccount receiver, Money amount) throws AccountFrozenException, NotEnoughBalanceException {
         if (this.isFrozen()) throw new AccountFrozenException(this.getIban());

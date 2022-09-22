@@ -21,7 +21,7 @@ public final class StudentCheckingAccountFinder {
     public StudentCheckingAccount execute(String iban, String keycloakId) throws AccountNotFoundException, AccountHolderNotFoundException {
         var accountHolder = this.accountHolderFinder.execute(keycloakId);
         var account = this.repository.findById(iban).orElseThrow(() -> new AccountNotFoundException(iban));
-        if(!account.isOwner(accountHolder.getId())) throw new AccountNotFoundException(iban);
+        if(!accountHolder.isAdmin() && !account.isOwner(accountHolder)) throw new AccountNotFoundException(iban);
         return account;
     }
 }
