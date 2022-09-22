@@ -13,7 +13,7 @@ public final class AccountHolderFinder {
         this.repository = repository;
     }
 
-    public AccountHolder execute(Long id) throws AccountHolderNotFoundException {
-        return this.repository.findById(id).orElseThrow(() -> new AccountHolderNotFoundException(id));
+    public AccountHolder execute(String keycloakId) throws AccountHolderNotFoundException {
+        return this.repository.findAccountHolderByKeycloakId(keycloakId).orElseThrow(() -> new AccountHolderNotFoundException(keycloakId));
     }
 }

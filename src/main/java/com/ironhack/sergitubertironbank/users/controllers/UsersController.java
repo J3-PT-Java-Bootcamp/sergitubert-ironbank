@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/users")
@@ -31,14 +32,12 @@ public final class UsersController {
 
     private final KeycloakAdminClientService kc;
 
-    private final AccountHolderRepository accountHolderRepository;
 
     public UsersController(AdminCreator adminCreator, AccountHolderCreator accountHolderCreator, AccountHolderFinder accountHolderFinder, KeycloakAdminClientService kc, AccountHolderRepository accountHolderRepository) {
         this.adminCreator = adminCreator;
         this.accountHolderCreator = accountHolderCreator;
         this.accountHolderFinder = accountHolderFinder;
         this.kc = kc;
-        this.accountHolderRepository = accountHolderRepository;
     }
 
     @PostMapping("/admin")
@@ -48,9 +47,8 @@ public final class UsersController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<AccountHolder> whoAmI() throws AccountHolderNotFoundException {
-        // TODO: Grab ID from principal
-        var me = this.accountHolderFinder.execute(1L);
+    public ResponseEntity<AccountHolder> whoAmI(Principal principal) throws AccountHolderNotFoundException {
+        var me = this.accountHolderFinder.execute(principal.getName());
         return new ResponseEntity<>(me, HttpStatus.OK);
     }
 
