@@ -22,5 +22,19 @@ A list of technologies used within the project:
 
 ### Set up
 1. Inside the project root, run ```docker compose up -d```
+2. If no keycloak realm has been configured, import keycloak realm configuration from ```src/main/resources/import-realm.json```
+3. Run the java project
+
 ## Documentation
 ***
+Once the project has been initialized, check the following routes for project documentation:
+* To get a JSON-based OpenAPI specification: ```/v3/api-docs/```
+* To get a interactive UI documentation: ```/swagger-ui/index.html#/```
+![Endpoints](endpoints.png)
+
+
+### Class diagrams
+#### Accounts
+![Accounts](class-diagram-accounts.png)
+#### Users
+![Users](class-diagram-users.png)
