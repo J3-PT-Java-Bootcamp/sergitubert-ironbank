@@ -37,22 +37,22 @@ public class CreditAccount extends BaseAccount {
 
     private BigDecimal interestRate;
 
-    private CreditAccount(String iban, Money balance, AccountHolder primaryOwner, Money creditLimit, BigDecimal interestRate) {
-        super(iban, balance, primaryOwner);
+    private CreditAccount(String iban, Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Money creditLimit, BigDecimal interestRate) {
+        super(iban, balance, primaryOwner, secondaryOwner);
         this.interestRate = interestRate;
         this.creditLimit = creditLimit;
     }
 
-    public static CreditAccount create(Money balance, AccountHolder primaryOwner, Money creditLimit, BigDecimal interestRate) {
+    public static CreditAccount create(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Money creditLimit, BigDecimal interestRate) {
         Iban iban = Iban.random(CountryCode.ES);
-        return new CreditAccount(iban.toString(), balance, primaryOwner, creditLimit, interestRate);
+        return new CreditAccount(iban.toString(), balance, primaryOwner, secondaryOwner, creditLimit, interestRate);
     }
 
-    public static CreditAccount fromDto(CreateCreditAccountDto dto, AccountHolder primaryOwner) {
+    public static CreditAccount fromDto(CreateCreditAccountDto dto, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         var balance = new Money(dto.getBalance());
         var creditLimit = dto.getCreditLimit() != null ? new Money(dto.getCreditLimit()) : CreditAccount.DEFAULT_CREDIT_LIMIT;
         var interestRate = dto.getInterestRate() != null ? dto.getInterestRate() : CreditAccount.DEFAULT_INTEREST_RATE;
-        return CreditAccount.create(balance, primaryOwner, creditLimit, interestRate);
+        return CreditAccount.create(balance, primaryOwner, secondaryOwner, creditLimit, interestRate);
     }
 
     @Override

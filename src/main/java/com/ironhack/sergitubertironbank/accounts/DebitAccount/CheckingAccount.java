@@ -5,7 +5,6 @@ import com.ironhack.sergitubertironbank.accounts.shared.domain.Money;
 import com.ironhack.sergitubertironbank.users.AccountHolder.AccountHolder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
@@ -22,18 +21,18 @@ public class CheckingAccount extends BaseDebitAccount {
     private static final Money MINIMUM_BALANCE_THRESHOLD = new Money(new BigDecimal(CheckingAccount.MINIMUM_BALANCE_THRESHOLD_RAW));
     private static final Money MONTHLY_MAINTENANCE_FEE = new Money(new BigDecimal("12.0"));
 
-    public static CheckingAccount fromDto(CreateCheckingAccountDto dto, AccountHolder user) {
+    public static CheckingAccount fromDto(CreateCheckingAccountDto dto, AccountHolder user, AccountHolder secondaryOwner) {
         var balance = dto.getBalance() != null ? new Money(dto.getBalance()) : CheckingAccount.MINIMUM_BALANCE_THRESHOLD;
-        return CheckingAccount.create(balance, user);
+        return CheckingAccount.create(balance, user, secondaryOwner);
     }
 
-    private CheckingAccount(String iban, Money balance, AccountHolder primaryOwner, Status status) {
-        super(iban, balance, primaryOwner, status);
+    private CheckingAccount(String iban, Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Status status) {
+        super(iban, balance, primaryOwner, secondaryOwner, status);
     }
 
-    public static CheckingAccount create(Money balance, AccountHolder primaryOwner) {
+    public static CheckingAccount create(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         Iban iban = Iban.random(CountryCode.ES);
-        return new CheckingAccount(iban.toString(), balance, primaryOwner, Status.ACTIVE);
+        return new CheckingAccount(iban.toString(), balance, primaryOwner, secondaryOwner, Status.ACTIVE);
     }
 
     @Override

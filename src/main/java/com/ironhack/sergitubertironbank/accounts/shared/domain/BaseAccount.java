@@ -49,10 +49,11 @@ public abstract class BaseAccount {
     @CreatedDate
     private Instant createdAt;
 
-    public BaseAccount(String iban, Money balance, AccountHolder primaryOwner) {
+    public BaseAccount(String iban, Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         this.iban = iban;
         this.balance = balance;
         this.primaryOwner = primaryOwner;
+        this.secondaryOwner = secondaryOwner;
     }
 
     public abstract boolean isFrozen();
@@ -62,6 +63,7 @@ public abstract class BaseAccount {
     public boolean isOwner(BaseUser user) {
         return this.primaryOwner.getId().equals(user.getId()) || this.secondaryOwner.getId().equals(user.getId());
     }
+
     public void transfer(BaseAccount receiver, Money amount) throws AccountFrozenException, NotEnoughBalanceException {
         if (this.isFrozen()) throw new AccountFrozenException(this.getIban());
         if (receiver.isFrozen()) throw new AccountFrozenException(receiver.getIban());

@@ -19,7 +19,12 @@ public final class SavingsAccountCreator {
 
     public SavingsAccount execute(CreateSavingsAccountDto dto) throws OwnerNotFoundException {
         var user = this.accountHolderRepository.findById(dto.getOwnerId()).orElseThrow(() -> new OwnerNotFoundException(dto.getOwnerId()));
-        var account = SavingsAccount.fromDto(dto, user);
+        var secondaryOwner = dto.getSecondaryOwnerId() != null
+                ?
+                this.accountHolderRepository.findById(dto.getSecondaryOwnerId()).orElseThrow(() -> new OwnerNotFoundException(dto.getSecondaryOwnerId()))
+                :
+                null;
+        var account = SavingsAccount.fromDto(dto, user, secondaryOwner);
         this.repository.save(account);
         return account;
     }

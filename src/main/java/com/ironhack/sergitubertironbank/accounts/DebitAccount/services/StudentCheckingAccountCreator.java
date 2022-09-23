@@ -22,7 +22,12 @@ public final class StudentCheckingAccountCreator {
     public StudentCheckingAccount execute(@Valid CreateStudentCheckingAccountDto dto) throws OwnerNotFoundException, UserIsNotStudentException {
         var user = this.accountHolderRepository.findById(dto.getOwnerId()).orElseThrow(() -> new OwnerNotFoundException(dto.getOwnerId()));
         if (!user.hasStudentAge()) throw new UserIsNotStudentException(dto.getOwnerId(), user.getAge());
-        var account = StudentCheckingAccount.fromDto(dto, user);
+        var secondaryOwner = dto.getSecondaryOwnerId() != null
+                ?
+                this.accountHolderRepository.findById(dto.getSecondaryOwnerId()).orElseThrow(() -> new OwnerNotFoundException(dto.getSecondaryOwnerId()))
+                :
+                null;
+        var account = StudentCheckingAccount.fromDto(dto, user, secondaryOwner);
         this.repository.save(account);
         return account;
     }

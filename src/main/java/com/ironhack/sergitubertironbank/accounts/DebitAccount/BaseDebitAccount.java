@@ -23,8 +23,8 @@ public abstract class BaseDebitAccount extends BaseAccount {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public BaseDebitAccount(String iban, Money balance, AccountHolder primaryOwner, Status status) {
-        super(iban, balance, primaryOwner);
+    public BaseDebitAccount(String iban, Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Status status) {
+        super(iban, balance, primaryOwner, secondaryOwner);
         this.status = status;
     }
 

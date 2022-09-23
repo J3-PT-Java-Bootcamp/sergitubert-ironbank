@@ -26,7 +26,12 @@ public final class CheckingAccountCreator {
         if (user.hasStudentAge()) {
             return this.studentCheckingAccountCreator.execute(CreateStudentCheckingAccountDto.fromDto(dto));
         }
-        var account = CheckingAccount.fromDto(dto, user);
+        var secondaryOwner = dto.getSecondaryOwnerId() != null
+                ?
+                this.accountHolderRepository.findById(dto.getSecondaryOwnerId()).orElseThrow(() -> new OwnerNotFoundException(dto.getSecondaryOwnerId()))
+                :
+                null;
+        var account = CheckingAccount.fromDto(dto, user, secondaryOwner);
         this.repository.save(account);
         return account;
     }

@@ -9,7 +9,6 @@ import com.ironhack.sergitubertironbank.users.AccountHolder.dto.CreateAccountHol
 import lombok.Getter;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.time.Period;

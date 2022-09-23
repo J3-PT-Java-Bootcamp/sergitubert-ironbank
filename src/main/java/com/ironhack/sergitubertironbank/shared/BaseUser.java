@@ -1,5 +1,6 @@
 package com.ironhack.sergitubertironbank.shared;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,11 +28,13 @@ public class BaseUser {
 
     @Column(insertable = false, updatable = false)
     private String dtype;
+
     public BaseUser(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
+    @JsonIgnore
     public boolean isAdmin() {
         return this.dtype.equals("Admin");
     }

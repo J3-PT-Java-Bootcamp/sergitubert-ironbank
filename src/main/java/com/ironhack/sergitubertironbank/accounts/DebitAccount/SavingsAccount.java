@@ -31,20 +31,20 @@ public class SavingsAccount extends BaseDebitAccount {
 
     private BigDecimal interestRate;
 
-    private SavingsAccount(String iban, Money balance, AccountHolder primaryOwner, BigDecimal interestRate, Status status) {
-        super(iban, balance, primaryOwner, status);
+    private SavingsAccount(String iban, Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal interestRate, Status status) {
+        super(iban, balance, primaryOwner, secondaryOwner, status);
         this.interestRate = interestRate;
     }
 
-    public static SavingsAccount create(Money balance, AccountHolder primaryOwner, BigDecimal interestRate) {
+    public static SavingsAccount create(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal interestRate) {
         Iban iban = Iban.random(CountryCode.ES);
-        return new SavingsAccount(iban.toString(), balance, primaryOwner, interestRate, Status.ACTIVE);
+        return new SavingsAccount(iban.toString(), balance, primaryOwner, secondaryOwner, interestRate, Status.ACTIVE);
     }
 
-    public static SavingsAccount fromDto(CreateSavingsAccountDto dto, AccountHolder primaryOwner) {
+    public static SavingsAccount fromDto(CreateSavingsAccountDto dto, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         var balance = dto.getBalance() != null ? new Money(dto.getBalance()) : SavingsAccount.DEFAULT_MINIMUM_BALANCE;
         var interestRate = dto.getInterestRate() != null ? dto.getInterestRate() : SavingsAccount.DEFAULT_INTEREST_RATE;
-        return SavingsAccount.create(balance, primaryOwner, interestRate);
+        return SavingsAccount.create(balance, primaryOwner, secondaryOwner, interestRate);
     }
 
     @Override
