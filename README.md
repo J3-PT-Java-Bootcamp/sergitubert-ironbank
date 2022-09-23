@@ -14,6 +14,9 @@ A list of technologies used within the project:
 * [Keycloak](https://www.keycloak.org/): Version 19.0.1
 * [Docker](https://www.docker.com/)
 
+### Libraries
+* [Iban4j](https://github.com/arturmkrtchyan/iban4j): Version 3.2.3
+* [springdoc-openapi-ui](https://springdoc.org/): Version 1.6.4
 ## Installation
 ***
 ### Prerequisites
